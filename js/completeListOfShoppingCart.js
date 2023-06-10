@@ -4,7 +4,7 @@ function completeListOfShoppingCart() {
 
     let productsList = document.getElementById("productsList");
 
-    //Inicializo la lista de items productsList
+    //Inicializo la lista de productos 'productsList'
     productsList.innerHTML = "";   
 
     checkboxes.forEach(function (checkbox) {       
