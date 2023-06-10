@@ -1,5 +1,7 @@
-// Función para calcular el monto total
+/* Función para armar el carrito de compras. 
+Completa la lista de productos seleccionados y calcula el total*/
 function buildShoppingCart() {
+
     completeListOfShoppingCart();
 
     //Inicializo el monto total del carrito en cero
