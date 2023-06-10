@@ -1,5 +1,5 @@
 // Función para calcular el monto total
-function calcularTotal() {
+function buildShoppingCart() {
     completeListOfShoppingCart();
 
     //Inicializo el monto total del carrito en cero
