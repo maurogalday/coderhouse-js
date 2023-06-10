@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculo de precio total de productos">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Entrega 1</title>
+</head>
+<body>
+    <h1>Entrega 1 | Carrito de compras</h1>
+    <br>
+    <div>
+        <h2>Items disponibles</h2>
+        <ul>
+            <li>
+                <label class="item">
+                    <input type="checkbox" data-price="20.00"> Item 1 ($20.00)
+                </label>
+            </li>
+            <li>
+                <label class="item">
+                    <input type="checkbox" data-price="1500.50"> Item 2 ($1500.50)
+                </label>
+            </li>
+            <li>
+                <label class="item">
+                    <input type="checkbox" data-price="3590.00"> Item 3 ($3590.00)
+                </label>
+            </li>
+            <li>
+                <label class="item">
+                    <input type="checkbox" data-price="150.80"> Item 4 ($150.80)
+                </label>
+            </li>
+        </ul>
+    </div>
+
+    <button onclick="calcularTotal()">Sumar</button>
+
+    <div>
+        <h2>Carrito de compras</h2>
+        <h3>Lista de productos seleccionados</h3>
+
+        <ul id="productsList"></ul>
+        
+        <p>Monto total: $<span id="total">0.00</span></p>
+    </div>
+    <script src="js/buildShoppingCart.js"></script>
+    <script src="js/completeListOfShoppingCart.js"></script>
+</body>
+</html>
