@@ -1,13 +1,11 @@
-function completeListOfShoppingCart() {
-    // Obtener todos los elementos checkbox seleccionados
-    let checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-
+function completeListOfShoppingCart(checkboxes) {
+    //Obtengo la lista de productos a completar en el html
     let productsList = document.getElementById("productsList");
 
     //Inicializo la lista de productos 'productsList'
     productsList.innerHTML = "";   
 
-    checkboxes.forEach(function (checkbox) {       
+    checkboxes.forEach((checkbox) => {       
        
        let label = checkbox.parentElement;
 

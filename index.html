@@ -16,27 +16,32 @@
         <ul>
             <li>
                 <label>
-                    <input type="checkbox" data-price="20.00"> Producto 1 ($20.00)
+                    <input type="checkbox" data-description="Producto 1"> Producto 1 ($20.00)
                 </label>
             </li>
             <li>
                 <label>
-                    <input type="checkbox" data-price="1500.50"> Producto 2 ($1500.50)
+                    <input type="checkbox" data-description="Producto 2"> Producto 2 ($1500.50)
                 </label>
             </li>
             <li>
                 <label>
-                    <input type="checkbox" data-price="3590.00"> Producto 3 ($3590.00)
+                    <input type="checkbox" data-description="Producto 3"> Producto 3 ($3590.00)
                 </label>
             </li>
             <li>
                 <label>
-                    <input type="checkbox" data-price="150.80"> Producto 4 ($150.80)
+                    <input type="checkbox" data-description="Producto 4"> Producto 4 ($150.80)
                 </label>
             </li>
         </ul>
     </div>
 
+    <div>
+        <h3>Aplicar cupon de descuento</h3>
+        <input id="discount" type="text">
+    </div>
+    
     <button onclick="buildShoppingCart()">Calcular total</button>
 
     <div>
@@ -44,9 +49,14 @@
         <h3>Lista de productos seleccionados</h3>
 
         <ul id="productsList"></ul>
+
+        <p>Compra realizada por el cliente: <span id="clientName"></span></p>
         
         <p>Monto total: $<span id="total">0.00</span></p>
+
+        <p>Monto total con Descuento: $<span id="totalDiscount">0.00</span></p>
     </div>
+    <script src="js/discount.js"></script>
     <script src="js/buildShoppingCart.js"></script>
     <script src="js/completeListOfShoppingCart.js"></script>
 </body>
