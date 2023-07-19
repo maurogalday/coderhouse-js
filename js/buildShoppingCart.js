@@ -1,6 +1,7 @@
 /* Función para armar el carrito de compras. 
 Completa la lista de productos seleccionados y calcula el total*/
 
+
 //Lista de productos con su descripcion y precio correspondiente
 const products = [
     { description: "Producto 1", price: 20 },
@@ -31,7 +32,7 @@ function buildShoppingCart() {
     completeListOfShoppingCart(checkboxes);
 
     document.getElementById("clientName").textContent = clientName;
-
+ 
     // Actualizar el valor del monto total en el elemento con id "total"
     document.getElementById("total").textContent = total.toFixed(2);
 
@@ -56,7 +57,7 @@ function getTotalPriceSelectedItems(checkboxes) {
 function getClientName() {
     let clientName;
     do {
-        clientName = prompt("Compra realizada por: ");
+        clientName =  document.getElementById("clientNameInput").value;
     } while (clientName == "");
 
     return clientName.toUpperCase();
