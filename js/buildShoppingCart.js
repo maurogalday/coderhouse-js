@@ -20,6 +20,9 @@ function buildShoppingCart() {
     //Obtengo el precio total de los productos seleccionados
     let total = getTotalPriceSelectedItems(checkboxes);
 
+    //Guardo JSON de productos seleccionados en localstorage y lo logueo
+    registerProductsInLocalStorage(checkboxes);
+
     //Obtengo el cupon ingresado
     let discount = document.getElementById("discount").value;
 
@@ -32,12 +35,14 @@ function buildShoppingCart() {
     completeListOfShoppingCart(checkboxes);
 
     document.getElementById("clientName").textContent = clientName;
- 
+
     // Actualizar el valor del monto total en el elemento con id "total"
     document.getElementById("total").textContent = total.toFixed(2);
 
     // Actualizar el valor del monto total con descuento en el elemento con id "totalDiscount"
     document.getElementById("totalDiscount").textContent = totalDiscount.toFixed(2);
+
+    logSelectedProducts();
 }
 
 function getTotalPriceSelectedItems(checkboxes) {
@@ -57,8 +62,37 @@ function getTotalPriceSelectedItems(checkboxes) {
 function getClientName() {
     let clientName;
     do {
-        clientName =  document.getElementById("clientNameInput").value;
+        clientName = document.getElementById("clientNameInput").value;
     } while (clientName == "");
 
     return clientName.toUpperCase();
+}
+
+function registerProductsInLocalStorage(checkboxes) {
+    /* Recorrer los checkboxes seleccionados y los busco en la lista 'products' y luego obtengo 
+    el precio de cada uno*/
+
+    const selectedProducts = [];
+
+    checkboxes.forEach((checkbox) => {
+        const itemPrice = products.find(product => product.description == checkbox.dataset.description);
+
+        selectedProducts.push({
+            description: checkbox.dataset.description,
+            price: parseFloat(itemPrice.price)
+        });
+
+    });
+    localStorage.setItem("selectedProducts", JSON.stringify(selectedProducts));
+}
+
+function logSelectedProducts() {
+    //Recupero de LocalStorage el json de productos
+    let selectedProducts = localStorage.getItem("selectedProducts");
+
+    //Recorro el json y lo logueo en consola
+    selectedProducts = JSON.parse(selectedProducts);
+    selectedProducts.forEach((product) => {
+        console.log(product.description + " - " + product.price);
+    });
 }
