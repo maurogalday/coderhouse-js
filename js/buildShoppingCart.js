@@ -62,9 +62,8 @@ function getTotalPriceSelectedItems(checkboxes) {
 
 function getClientName() {
     let clientName;
-    do {
-        clientName = document.getElementById("clientNameInput").value;
-    } while (clientName == "");
+
+    clientName = document.getElementById("clientNameInput").value;
 
     return clientName.toUpperCase();
 }

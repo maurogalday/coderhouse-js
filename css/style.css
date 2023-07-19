@@ -40,6 +40,6 @@ body {
         border-color: var(--border-color-button__search--hover) !important;
 }
 
-#discountError {
+#errorMessage {
         color:red;
 }

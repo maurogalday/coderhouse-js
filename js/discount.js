@@ -19,8 +19,8 @@
 // }
 
 function calculateDiscount(amountTotal, codeDiscount) {
-    const messageError = document.getElementById("discountError");
-    messageError.innerText = "";
+    const errorMessage = document.getElementById("errorMessage");
+    errorMessage.innerText = "";
 
     codeDiscount = codeDiscount.toUpperCase();
 
@@ -32,7 +32,8 @@ function calculateDiscount(amountTotal, codeDiscount) {
 
     if (value != null) {
         return amountTotal - (amountTotal * value / 100);
+    } else {
+        errorMessage.innerText = "El codigo ingresado no es valido";
+        return amountTotal;
     }
-
-    messageError.innerText = "El codigo ingresado no es valido";
 }
