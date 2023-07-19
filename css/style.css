@@ -1,4 +1,45 @@
-#discount {
+:root {
+        --font: #B9663C;
+        --background-button__search: #B9663C;
+        --color-button__search: #fff;
+        --background-button__search--hover: #d9733e;
+        --border-color-button__search--hover: #91502f;
+}
+
+* {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+
+}
+
+body {
+        background-color: #F5E7E0 !important;
+        font-family: "Josefin Sans" !important;
+        color: var(--font) !important;
+        padding-top: 1rem;
+        padding-left: 3rem;
+        padding-right: 3rem;
+        padding-bottom: 1rem;
+}
+
+#discount, #clientNameInput {
         width: 17rem;
         margin-bottom: 2rem;
+}
+
+.btn-search {
+        background-color: var(--background-button__search) !important;
+        color: var(--color-button__search) !important;
+        transition: all 0.4s !important;
+}
+
+.btn-search:hover {
+        color: white !important;
+        background-color: var(--background-button__search--hover) !important;
+        border-color: var(--border-color-button__search--hover) !important;
+}
+
+#discountError {
+        color:red;
 }
