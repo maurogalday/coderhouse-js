@@ -42,6 +42,7 @@ function buildShoppingCart() {
     // Actualizar el valor del monto total con descuento en el elemento con id "totalDiscount"
     document.getElementById("totalDiscount").textContent = totalDiscount.toFixed(2);
 
+    //Muestro en consola los productos seleccionados
     logSelectedProducts();
 }
 
