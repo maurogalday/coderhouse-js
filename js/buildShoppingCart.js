@@ -14,36 +14,43 @@ function buildShoppingCart() {
     //Obtengo por Prompt el nombre del cliente a realizarle el cobro de productos
     const clientName = getClientName();
 
-    // Obtener todos los elementos checkbox seleccionados
-    let checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+    if (clientName != null) {
 
-    //Obtengo el precio total de los productos seleccionados
-    let total = getTotalPriceSelectedItems(checkboxes);
+        // Obtener todos los elementos checkbox seleccionados
+        let checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
 
-    //Guardo JSON de productos seleccionados en localstorage y lo logueo
-    registerProductsInLocalStorage(checkboxes);
+        //Obtengo el precio total de los productos seleccionados
+        let total = getTotalPriceSelectedItems(checkboxes);
 
-    //Obtengo el cupon ingresado
-    let discount = document.getElementById("discount").value;
+        //Guardo JSON de productos seleccionados en localstorage y lo logueo
+        registerProductsInLocalStorage(checkboxes);
 
-    //Obtengo el monto total con el descuento aplicado en caso de haberse ingresado un cupon
-    let totalDiscount = calculateDiscount(total, discount);
+        //Obtengo el cupon ingresado
+        let discount = document.getElementById("discount").value;
 
-    //----------Completo HTML----------
+        //Obtengo el monto total con el descuento aplicado en caso de haberse ingresado un cupon
+        let totalDiscount = calculateDiscount(total, discount);
 
-    //Completo la lista de productos seleccionados en el carrito
-    completeListOfShoppingCart(checkboxes);
+        //----------Completo HTML----------
 
-    document.getElementById("clientName").textContent = clientName;
+        //Completo la lista de productos seleccionados en el carrito
+        completeListOfShoppingCart(checkboxes);
 
-    // Actualizar el valor del monto total en el elemento con id "total"
-    document.getElementById("total").textContent = total.toFixed(2);
+        document.getElementById("clientName").textContent = clientName;
 
-    // Actualizar el valor del monto total con descuento en el elemento con id "totalDiscount"
-    document.getElementById("totalDiscount").textContent = totalDiscount.toFixed(2);
+        const DateTime = luxon.DateTime;
 
-    //Muestro en consola los productos seleccionados
-    logSelectedProducts();
+        document.getElementById("dateAndTimeOfPurchase").textContent = returnDateTimeNow();
+
+        // Actualizar el valor del monto total en el elemento con id "total"
+        document.getElementById("total").textContent = total.toFixed(2);
+
+        // Actualizar el valor del monto total con descuento en el elemento con id "totalDiscount"
+        document.getElementById("totalDiscount").textContent = totalDiscount.toFixed(2);
+
+        //Muestro en consola los productos seleccionados
+        logSelectedProducts();
+    }
 }
 
 function getTotalPriceSelectedItems(checkboxes) {
@@ -61,11 +68,19 @@ function getTotalPriceSelectedItems(checkboxes) {
 }
 
 function getClientName() {
-    let clientName;
+    let clientName = document.getElementById("clientNameInput").value;
 
-    clientName = document.getElementById("clientNameInput").value;
-
-    return clientName.toUpperCase();
+    if (clientName == "") {
+        Swal.fire({
+            title: 'Error!',
+            text: 'Nombre de cliente vacio. Ingrese un nombre por favor',
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+            timer: 3500
+        })
+    } else {
+        return clientName.toUpperCase();
+    }
 }
 
 function registerProductsInLocalStorage(checkboxes) {
@@ -95,4 +110,10 @@ function logSelectedProducts() {
     selectedProducts.forEach((product) => {
         console.log(product.description + " - " + product.price);
     });
+}
+
+function returnDateTimeNow(){
+   const DateTime = luxon.DateTime;
+
+   return DateTime.now().toLocaleString(DateTime.DATETIME_SHORT);
 }
