@@ -3,14 +3,21 @@ Completa la lista de productos seleccionados y calcula el total*/
 
 
 //Lista de productos con su descripcion y precio correspondiente
-const products = [
+/* const products = [
     { description: "Producto 1", price: 20 },
     { description: "Producto 2", price: 1500.50 },
     { description: "Producto 3", price: 3590 },
     { description: "Producto 4", price: 150.80 }
-];
+]; */
+
+const products = fetch(`https://my-json-server.typicode.com/maurogalday/coderhouse-js/products`)
+.then((response) => response.json()) 
+.then((data) => console.log(data));
+
 
 function buildShoppingCart() {
+    completeCheckbox(products);
+    
     //Obtengo por Prompt el nombre del cliente a realizarle el cobro de productos
     const clientName = getClientName();
 
@@ -112,8 +119,28 @@ function logSelectedProducts() {
     });
 }
 
-function returnDateTimeNow(){
-   const DateTime = luxon.DateTime;
+function returnDateTimeNow() {
+    const DateTime = luxon.DateTime;
 
-   return DateTime.now().toLocaleString(DateTime.DATETIME_SHORT);
+    return DateTime.now().toLocaleString(DateTime.DATETIME_SHORT);
+}
+
+function completeCheckbox(products){
+    const productsList = document.getElementById('productsList');
+
+    products.forEach((description, price) => {
+        const li = document.createElement('li');
+        const label = document.createElement('label');
+        const checkbox = document.createElement('input');
+
+        checkbox.type = 'checkbox';
+        checkbox.dataset.description = description;
+
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(description + "($" + price + ")"));
+
+        li.appendChild(label);
+
+        productsList.appendChild(li);
+    })
 }

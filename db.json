@@ -19,6 +19,11 @@
             "id":4,
             "description": "Producto 4",
             "price": 150.80
+        },
+        {
+            "id":5,
+            "description": "Producto 5",
+            "price": 2000.80
         }
     ]
 }
