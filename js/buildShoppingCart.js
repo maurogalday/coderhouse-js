@@ -1,23 +1,7 @@
-/* Función para armar el carrito de compras. 
-Completa la lista de productos seleccionados y calcula el total*/
-
-
-//Lista de productos con su descripcion y precio correspondiente
-/* const products = [
-    { description: "Producto 1", price: 20 },
-    { description: "Producto 2", price: 1500.50 },
-    { description: "Producto 3", price: 3590 },
-    { description: "Producto 4", price: 150.80 }
-]; */
-
-const products = fetch(`https://my-json-server.typicode.com/maurogalday/coderhouse-js/products`)
-.then((response) => response.json()) 
-.then((data) => console.log(data));
-
+/* Función para armar el carrito de compras. Completa la lista de productos seleccionados y calcula el total*/
 
 function buildShoppingCart() {
-    completeCheckbox(products);
-    
+
     //Obtengo por Prompt el nombre del cliente a realizarle el cobro de productos
     const clientName = getClientName();
 
@@ -26,82 +10,66 @@ function buildShoppingCart() {
         // Obtener todos los elementos checkbox seleccionados
         let checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
 
-        //Obtengo el precio total de los productos seleccionados
-        let total = getTotalPriceSelectedItems(checkboxes);
+        buildMapOfProducts().then((products) => {
 
-        //Guardo JSON de productos seleccionados en localstorage y lo logueo
-        registerProductsInLocalStorage(checkboxes);
+            //Obtengo el precio total de los productos seleccionados
+            let total = getTotalPriceSelectedItems(checkboxes, products);
 
-        //Obtengo el cupon ingresado
-        let discount = document.getElementById("discount").value;
+            //Guardo JSON de productos seleccionados en localStorage y lo logueo
+            registerProductsInLocalStorage(checkboxes, products);
 
-        //Obtengo el monto total con el descuento aplicado en caso de haberse ingresado un cupon
-        let totalDiscount = calculateDiscount(total, discount);
+            //Obtengo el monto total con el descuento aplicado en caso de haberse ingresado un cupon
+            let totalDiscount = calculateDiscount(total);
 
-        //----------Completo HTML----------
+            //Muestro en consola los productos seleccionados
+            logSelectedProducts();
 
-        //Completo la lista de productos seleccionados en el carrito
-        completeListOfShoppingCart(checkboxes);
-
-        document.getElementById("clientName").textContent = clientName;
-
-        const DateTime = luxon.DateTime;
-
-        document.getElementById("dateAndTimeOfPurchase").textContent = returnDateTimeNow();
-
-        // Actualizar el valor del monto total en el elemento con id "total"
-        document.getElementById("total").textContent = total.toFixed(2);
-
-        // Actualizar el valor del monto total con descuento en el elemento con id "totalDiscount"
-        document.getElementById("totalDiscount").textContent = totalDiscount.toFixed(2);
-
-        //Muestro en consola los productos seleccionados
-        logSelectedProducts();
+            //----------Completo Resumen HTML----------
+            completeSummary(checkboxes, total, totalDiscount, clientName);
+        })
+            .catch((error) => {
+                console.error('Error building map of products:', error);
+            });
     }
-}
-
-function getTotalPriceSelectedItems(checkboxes) {
-
-    let total = 0;
-
-    /* Recorrer los checkboxes seleccionados y los busco en la lista 'products' y luego obtengo 
-    el precio de cada uno para sumarlos */
-    checkboxes.forEach((checkbox) => {
-        const itemPrice = products.find(product => product.description == checkbox.dataset.description);
-        total += parseFloat(itemPrice.price);
-    });
-
-    return total;
 }
 
 function getClientName() {
     let clientName = document.getElementById("clientNameInput").value;
 
     if (clientName == "") {
-        Swal.fire({
-            title: 'Error!',
-            text: 'Nombre de cliente vacio. Ingrese un nombre por favor',
-            icon: 'error',
-            confirmButtonText: 'Aceptar',
-            timer: 3500
-        })
-    } else {
-        return clientName.toUpperCase();
+        showAlert(iconsAlerts.ERROR, 'Error!', 'Nombre de cliente vacio. Ingrese un nombre por favor')
+        return null;
     }
+
+    return clientName.toUpperCase();
 }
 
-function registerProductsInLocalStorage(checkboxes) {
+function getTotalPriceSelectedItems(checkboxes, products) {
+
+    let total = 0;
+
+    /* Recorrer los checkboxes seleccionados y los busco en la lista 'products' y luego obtengo 
+    el precio de cada uno para sumarlos */
+    checkboxes.forEach((checkbox) => {
+        const itemProduct = products.get(checkbox.dataset.description);
+        total += parseFloat(itemProduct.price);
+    });
+
+    return total;
+}
+
+function registerProductsInLocalStorage(checkboxes, products) {
     /* Recorrer los checkboxes seleccionados y los busco en la lista 'products' y luego obtengo 
     el precio de cada uno*/
 
     const selectedProducts = [];
 
     checkboxes.forEach((checkbox) => {
-        const itemPrice = products.find(product => product.description == checkbox.dataset.description);
+        const itemProduct = products.get(checkbox.dataset.description);
 
         selectedProducts.push({
             description: checkbox.dataset.description,
-            price: parseFloat(itemPrice.price)
+            price: parseFloat(itemProduct.price)
         });
 
     });
@@ -119,28 +87,26 @@ function logSelectedProducts() {
     });
 }
 
-function returnDateTimeNow() {
-    const DateTime = luxon.DateTime;
+async function buildMapOfProducts() {
+    try {
+        const listCompleted = await saveInLocalStorageProducts(); // Espera a que se complete el almacenado en localstorage
 
-    return DateTime.now().toLocaleString(DateTime.DATETIME_SHORT);
-}
+        if (listCompleted) {
+            const productsFromLocalStorage = localStorage.getItem('products');
 
-function completeCheckbox(products){
-    const productsList = document.getElementById('productsList');
+            const parsedMap = JSON.parse(productsFromLocalStorage);
 
-    products.forEach((description, price) => {
-        const li = document.createElement('li');
-        const label = document.createElement('label');
-        const checkbox = document.createElement('input');
+            const productMap = new Map();
 
-        checkbox.type = 'checkbox';
-        checkbox.dataset.description = description;
+            parsedMap.forEach((product) => {
+                productMap.set(product.description, product);
+            });
 
-        label.appendChild(checkbox);
-        label.appendChild(document.createTextNode(description + "($" + price + ")"));
-
-        li.appendChild(label);
-
-        productsList.appendChild(li);
-    })
+            return productMap;
+        } else {
+            console.error('Error building list of products.');
+        }
+    } catch (error) {
+        console.error('Error building map of products:', error);
+    }
 }

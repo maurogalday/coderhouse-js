@@ -28,6 +28,14 @@ body {
         margin-bottom: 2rem;
 }
 
+#discountName, #discountValue {
+        margin-bottom: 1rem;
+}
+
+#btnClearDiscounts, #btnSaveDiscount {
+        margin-top: 1rem;
+}
+
 .btn-search {
         background-color: var(--background-button__search) !important;
         color: var(--color-button__search) !important;
@@ -41,5 +49,5 @@ body {
 }
 
 #errorMessage {
-        color:red;
+        color: red;
 }
