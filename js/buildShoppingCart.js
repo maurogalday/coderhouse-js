@@ -110,3 +110,4 @@ async function buildMapOfProducts() {
         console.error('Error building map of products:', error);
     }
 }
+
